@@ -44,7 +44,7 @@ class _AppInitState extends State<AppInit> with AfterLayoutMixin<AppInit> {
   /// Check if the App is Login
   Future checkLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('loggedIn') ?? false;
+    return prefs.getBool('loggedIn') ?? true;
   }
 
   @override
@@ -88,10 +88,10 @@ class _AppInitState extends State<AppInit> with AfterLayoutMixin<AppInit> {
 
   Widget onNextScreen() {
     if (isFirstSeen && !kIsWeb) {
-      if (onBoardingData.isNotEmpty) return OnBoardScreen(appConfig);
+      if (onBoardingData.isNotEmpty) return OnBoardScreen(context);
     }
 
-    if (kLoginSetting['IsRequiredLogin'] && !isLoggedIn) return LoginScreen();
+    if (kLoginSetting['IsRequiredLogin'] && !isLoggedIn) return LoginScreen(context);
 
     return widget.onNext(appConfig);
   }
@@ -102,7 +102,7 @@ class _AppInitState extends State<AppInit> with AfterLayoutMixin<AppInit> {
     if (kSplashScreen.lastIndexOf('flr') > 0) {
       return SplashScreen.navigate(
         name: kSplashScreen,
-        startAnimation: 'fluxstore',
+        startAnimation: 'main_app',
         backgroundColor: Colors.white,
         next: (object) => onNextScreen(),
         until: () => Future.delayed(Duration(seconds: 2)),
@@ -113,18 +113,18 @@ class _AppInitState extends State<AppInit> with AfterLayoutMixin<AppInit> {
       return AnimatedSplash(
         imagePath: kSplashScreen,
         home: onNextScreen(),
-        duration: 2500,
+        duration: 3500,
         type: AnimatedSplashType.StaticDuration,
       );
     }
 
     return CustomSplash(
       imagePath: kLogoImage,
-      backGroundColor: Colors.white,
+      backGroundColor: Colors.black,
       animationEffect: 'fade-in',
-      logoSize: 50,
+      logoSize: 40,
       home: onNextScreen(),
-      duration: 2500,
+      duration: 3500,
     );
   }
 }
