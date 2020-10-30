@@ -77,13 +77,9 @@ class AppState extends State<App> implements FirebaseCloudMessagingDelegate {
         () {
           printLog("[AppState] init mobile modules ..");
 
-          MyConnectivity.instance.initialise();
-          MyConnectivity.instance.myStream.listen((onData) {
-            printLog("[App] internet issue change: $onData");
-
             if (MyConnectivity.instance.isIssue(onData)) {
-              if (MyConnectivity.instance.isShow == false) {
-                MyConnectivity.instance.isShow = true;
+              if (MyConnectivity.instance.isShow == true) {
+                MyConnectivity.instance.isShow = false;
                 showDialogNotInternet(context).then((onValue) {
                   MyConnectivity.instance.isShow = false;
                   printLog("[showDialogNotInternet] dialog closed $onValue");
@@ -95,11 +91,18 @@ class AppState extends State<App> implements FirebaseCloudMessagingDelegate {
                 MyConnectivity.instance.isShow = false;
               }
             }
+          AppModel appModel = Provider.of<AppModel>(context);
+    bool isDarkTheme = appModel.darkTheme ?? false;
           });
 
           FirebaseCloudMessagagingWapper()
             ..init()
             ..delegate = this;
+      
+          MyConnectivity.instance.initialise();
+          MyConnectivity.instance.myStream.listen((onData) {
+            printLog("[App] internet issue change: $onData");
+
 
           // OneSignalWapper()..init();
           printLog("[AppState] register modules .. DONE");
@@ -137,8 +140,7 @@ class AppState extends State<App> implements FirebaseCloudMessagingDelegate {
   ThemeData getTheme(context) {
     printLog("[AppState] build Theme");
 
-    AppModel appModel = Provider.of<AppModel>(context);
-    bool isDarkTheme = appModel.darkTheme ?? false;
+    
 
     if (appModel.appConfig == null) {
       /// This case is loaded first time without config file
@@ -150,6 +152,8 @@ class AppState extends State<App> implements FirebaseCloudMessagingDelegate {
         primaryColor: HexColor(
           appModel.appConfig["Setting"]["MainColor"],
         ),
+        AppModel appModel = Provider.of<AppModel>(context);
+    bool isDarkTheme = appModel.darkTheme ?? false;
       );
     }
     return buildLightTheme(appModel.locale).copyWith(
