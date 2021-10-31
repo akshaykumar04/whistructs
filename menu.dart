@@ -51,6 +51,37 @@ class _MenuBarState extends State<MenuBar> {
                       widget.controllerRouteWeb.sink.add("/category");
                     },
                   ),
+                class _MenuBarState extends State<MenuBar> {
+  @override
+  Widget build(BuildContext context) {
+    printLog("[MenuBar] build");
+    bool loggedIn = Provider.of<UserModel>(context).loggedIn;
+
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          DrawerHeader(
+            child: Row(
+              children: <Widget>[
+                Image.asset(kLogoImage, height: 80),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 15.0),
+            child: Column(
+              children: <Widget>[
+                if (kLayoutWeb)
+                  ListTile(
+                    leading: const Icon(
+                      Icons.format_list_bulleted,
+                      size: 20,
+                    ),
+                    title: Text(S.of(context).category),
+                    onTap: () {
+                      widget.controllerRouteWeb.sink.add("/category");
+                    },
+                  ),
                 if (kLayoutWeb)
                   ListTile(
                     leading: const Icon(
