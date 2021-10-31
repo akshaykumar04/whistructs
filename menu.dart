@@ -74,6 +74,23 @@ class _MenuBarState extends State<MenuBar> {
                       }
                     },
                   ),
+                 ListTile(
+                  leading: Icon(Icons.exit_to_app, size: 40),
+                  title: loggedIn
+                      ? Text(S.of(context).logout)
+                      : Text(S.of(context).login),
+                  onTap: () {
+                    if (loggedIn) {
+                      Provider.of<UserModel>(context, listen: false).logout();
+                    } else {
+                      if (kLayoutWeb) {
+                        widget.controllerRouteWeb.sink.add("/login");
+                      } else {
+                        Navigator.pushNamed(context, "/login");
+                      }
+                    }
+                  },
+                ),
                 ListTile(
                   leading: Icon(Icons.exit_to_app, size: 20),
                   title: loggedIn
@@ -95,6 +112,26 @@ class _MenuBarState extends State<MenuBar> {
                   height: 20,
                 ),
                 ExpansionTile(
+                    initiallyExpanded: true,
+                    title: Text(
+                      S.of(context).byCategory.toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).accentColor.withOpacity(0.5),
+                      ),
+                    ),
+                   ExpansionTile(
+                    initiallyExpanded: true,
+                    title: Text(
+                      S.of(context).byCategory.toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).accentColor.withOpacity(0.5),
+                      ),
+                    ),
+                      ExpansionTile(
                     initiallyExpanded: true,
                     title: Text(
                       S.of(context).byCategory.toUpperCase(),
